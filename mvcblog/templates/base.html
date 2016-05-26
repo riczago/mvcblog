@@ -1,0 +1,17 @@
+<!--DOCTYPE html-->
+<hml>
+  <head>
+    <title>{% block head_title %} mvcblog {% endblock head_title %}</title>
+    <style>{% block style %}{% endblock style %}</style>
+  </head>
+  <body>
+
+   {% include "mess_display.html" %}
+
+    <div class="container">
+      {% block content %}
+
+      {% endblock content %}
+    </div>
+  </body>
+</html>

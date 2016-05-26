@@ -1,16 +1,8 @@
-<!--DOCTYPE html-->
-<hml>
-  <head>
-  </head>
-  <body>
-    
-    {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-      <li{% if message.tags %} class="{{message.tags}}"{%endif%}>{{message}}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+{% extends "base.html" %}
+
+{% block head_title %} {{instance}} | {{block.super}} {% endblock head_title %}
+
+{% block content %}
 
     <marquee><h2>{{ title }}</h2></marquee>
 
@@ -20,5 +12,4 @@
     {{instance.updated}}</br>
     {{instance.timestamp}}</br>
 
-  </body>
-</html>
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <marquee><h2>hello from {{ title }}</h2></marquee>
+  {% for obj in object_list %}
+
+  {% url "posts:detail" id=obj.id %}
+  <a href="{{ obj.get_absolute_url }}">{{obj.title}}</a><br/>
+  {{obj.id}}</br>
+  {{obj.text}}</br>
+  {{obj.updated}}</br>
+  {{obj.timestamp}}</br>
+  {% endfor %}
+{% endblock content %}
