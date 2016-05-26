@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url                                       #include
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),                                           #url for admin site
     url(r'^blog/', include("blog.urls", namespace='posts')),                    #includes urls.py from blog
 ]
+
+if settings.DEBUG:                                                              #tells where to look for static files
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
