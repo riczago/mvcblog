@@ -4,6 +4,7 @@ from .forms import PostForm                                                     
 from .models import Post
 from django.contrib import messages                                             #popup time ;)
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger        #to use paginator
+from django.db.models import Q                                                  #advanced queryes
 
 #CRUD                                                                           #function based views
 
@@ -30,7 +31,14 @@ def blog_detail(request, id=None):                                              
     return render(request, 'post_detail.html', context_data)
 
 def blog_list(request):                                                         #list items
-    queryset_list = Post.objects.all()#.order_by("-timestamp")                       #queryset to get data from db
+    queryset_list = Post.objects.all()#.order_by("-timestamp")                  #queryset to get data from db
+    query = request.GET.get("q")                                                #search post
+    if query:
+        queryset_list = queryset_list.filter(
+            Q(title__icontains=query)|
+            Q(text__icontains=query)|
+            Q(user__first_name__icontains=query)|
+            Q(user__last_name__icontains=query)).distinct()
     paginator = Paginator(queryset_list, 10)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
