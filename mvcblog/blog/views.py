@@ -8,7 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger        
 #CRUD                                                                           #function based views
 
 def blog_create(request):                                                       #Create R U D
-    form = PostForm(request.POST or None)                                       #"this field id required"
+    form = PostForm(request.POST or None, request.FILES or None)                #"this field id required"
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()                                                         #stores in db
@@ -50,7 +50,7 @@ def blog_list(request):                                                         
 
 def blog_update(request, id=None):                                              #C R Update D
     instance = get_object_or_404(Post, id = id)
-    form = PostForm(request.POST or None, instance=instance)                    #"this field id required" + reloads data
+    form = PostForm(request.POST or None, request.FILES or None, instance=instance) #"this field id required" + reloads data
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()

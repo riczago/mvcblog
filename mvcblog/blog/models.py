@@ -3,8 +3,12 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.urlresolvers import reverse
 
+def upload_location(instance, filename):                                        #tells me where files are going
+    return "%s/%s.%s" %(instance.id, filename)
+
 class Post(models.Model):
     title = models.CharField(max_length=140)
+    image = models.FileField(upload_to="upload_location", ull=True, blank=True)
     text = models.TextField()
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)           #updated time
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)         #created time
