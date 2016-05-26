@@ -1,0 +1,24 @@
+<!--DOCTYPE html-->
+<hml>
+  <head>
+  </head>
+  <body>
+    
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{message.tags}}"{%endif%}>{{message}}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <marquee><h2>{{ title }}</h2></marquee>
+
+    {{instance.id}}</br>
+    {{instance.title}}</br>
+    {{instance.text}}</br>
+    {{instance.updated}}</br>
+    {{instance.timestamp}}</br>
+
+  </body>
+</html>
