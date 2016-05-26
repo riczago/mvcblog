@@ -53,10 +53,13 @@ def blog_list(request):                                                         
 def blog_update(request, id=None):                                              #C R Update D
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
+    if not request.user.is_authenticated():
+        raise Http404
     instance = get_object_or_404(Post, id = id)
     form = PostForm(request.POST or None, request.FILES or None, instance=instance) #"this field id required" + reloads data
     if form.is_valid():
         instance = form.save(commit=False)
+        instance.user = request.user
         instance.save()
         messages.success(request, "Updated!", extra_tags='some-tag')
         return HttpResponseRedirect(instance.get_absolute_url())
@@ -69,7 +72,7 @@ def blog_update(request, id=None):                                              
 
 def blog_delete(request, id=None):                                              #C R U Delete
     if not request.user.is_staff or not request.user.is_superuser:
-        raise Http404 
+        raise Http404
     instance = get_object_or_404(Post, id = id)
     instance.delete()
     messages.success(request, "Deleted!")
