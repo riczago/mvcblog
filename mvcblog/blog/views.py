@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect                
 from .forms import PostForm                                                     #from forms.py
 from .models import Post
 from django.contrib import messages                                             #popup time ;)
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger        #to use paginator
 
 #CRUD                                                                           #function based views
 
@@ -27,10 +28,23 @@ def blog_detail(request, id=None):                                              
     return render(request, 'post_detail.html', context_data)
 
 def blog_list(request):                                                         #list items
-    queryset = Post.objects.all()                                               #queryset to get data from db
+    queryset_list = Post.objects.all()#.order_by("-timestamp")                       #queryset to get data from db
+    paginator = Paginator(queryset_list, 10)
+    page_request_var = "page"
+    page = request.GET.get(page_request_var)
+    try:
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        #If page is not an integer, deliver first page
+        queryset = paginator.page(1)
+    except EmptyPage:
+        #If page is out of range (e.g. 9999), deliver last page  of results.
+        queryset = paginator.page(paginator.num_pages)
+
     context_data = {                                                            #context dict to pass data through pages
         "object_list":queryset,
         "title":"List",
+        "page_request_var": page_request_var,
     }
     return render(request, 'post_list.html', context_data)
 
